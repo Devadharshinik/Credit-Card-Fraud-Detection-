@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Credit Card Fraud Detection</title>
+    <style>
+        html,
+body {
+    display: flex;
+    justify-content: center;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 15px;
+}
+
+form {
+    border: none;
+}
+
+input[type=text],
+input[type=password] {
+    width: 100%;
+    padding: 16px 8px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #0c2deb;
+    color: white;
+    padding: 14px 0;
+    margin: 10px 0;
+    border: none;
+    cursor: grabbing;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    fone-size: 15;
+}
+
+button:hover {
+    opacity: 0.8;
+    background-color: #0ceb2a;
+}
+
+.formcontainer {
+    text-align: left;
+    margin: 24px 50px 12px;
+}
+
+.container {
+    padding: 16px 0;
+    text-align: left;
+}
+
+span.psw {
+    float: right;
+    padding-top: 0;
+    padding-right: 15px;
+}
+
+
+/* Change styles for span on extra small screens */
+
+@media screen and (max-width: 300px) {
+    span.psw {
+        display: block;
+        float: none;
+    }
+}
+</style>
+
+  </head>
+  <body>
+      <h1><strong>Credit Card Fraud Detection  </strong></h1>
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      <hr/>
+      <div class="formcontainer">
+      
+      <div class="container">
+        <label for="uname"><strong>Phone Number</strong></label>
+        <input type="text" id="number" placeholder="Enter phone number" name="uname" required>
+      </div>
+      <div id="recaptcha-container"></div>
+      <button type="button" onclick="phoneAuth();">Send Otp</button>
+    
+    </form>
+    <form >
+        <div class="formcontainer">
+        <div class="container">
+        <label for="uname"><strong>Verification Code</strong></label>
+        <input type="text" id="verificationCode" placeholder="Enter verification code">
+        </div>
+        <button type="button" onclick="codeverify();">Verify code</button>
+        <a href="emailauth.html" class="next">Next &raquo;</a>
+      
+    </form>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase.js"></script>
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+    apiKey: "AIzaSyCsYLrgAl_SC_Dl2YnraLAnhuTTJpl42-A",
+    authDomain: "credit-card-fraud-detect-5e545.firebaseapp.com",
+    projectId: "credit-card-fraud-detect-5e545",
+    storageBucket: "credit-card-fraud-detect-5e545.appspot.com",
+    messagingSenderId: "425751419755",
+    appId: "1:425751419755:web:58292baf54e318660e0a2e",
+    measurementId: "G-JS0CYPMDW5"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+     firebase.analytics();
+</script>
+    <script>
+        window.onload = function() {
+    render();
+};
+
+function render() {
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+    recaptchaVerifier.render();
+}
+
+function phoneAuth() {
+    //get the number
+    var number = document.getElementById('number').value;
+    // alert(number);
+    //it takes two parameter first one is number and second one is recaptcha
+    firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function(confirmationResult) {
+        //s is in lowercase
+        window.confirmationResult = confirmationResult;
+        coderesult = confirmationResult;
+        console.log(coderesult);
+        alert("Message sent");
+    }).catch(function(error) {
+        alert(error.message);
+    });
+}
+
+function codeverify() {
+    var code = document.getElementById('verificationCode').value;
+
+
+    coderesult.confirm(code).then(function(result) {
+        alert("Successfully Verified..Please Go to next page For Email Verification");
+        var user = result.user;
+        console.log(user);
+    }).catch(function(error) {
+        alert(error.message);
+    });
+}
+
+
+
+    </script>
+  </body>
+</html>
